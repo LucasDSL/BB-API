@@ -10,5 +10,13 @@
     "sourceType": "module"
   },
   "plugins": ["@typescript-eslint"],
-  "rules": {}
+  "rules": {
+    "linebreak-style": 0,
+    "no-console": "off",
+    "prettier/prettier": "error",
+    "func-names": "off",
+    "object-shorthadnd": "off",
+    "cass-methods-use-this": "off",
+    "single-quote": false
+  }
 }
