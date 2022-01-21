@@ -19,12 +19,13 @@ class CustomerController {
       "password",
       "customerAddress",
     ]
-    fieldsNewCustomer.forEach((field) => {
-      if (!customerFromClient[field]) {
-        throw new CampoObrigatorio()
-      }
-    })
     try {
+      fieldsNewCustomer.forEach((field) => {
+        if (!customerFromClient[field]) {
+          throw new CampoObrigatorio()
+        }
+      })
+      
       customerFromClient.password = await encryptPassword(
         customerFromClient.password,
         next
@@ -61,7 +62,10 @@ class CustomerController {
     try {
       const { customerId } = req.params
       const conn = await createConnection()
-      const isThereCustomer = await conn.manager.findOne(Customers, customerId)
+      const isThereCustomer = await conn.manager.findOne(
+        Customers,
+        Number(customerId)
+      )
       if (!isThereCustomer) {
         await conn.close()
         throw new ClienteNaoEncontrado(Number(customerId))

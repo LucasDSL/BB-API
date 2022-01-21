@@ -1,7 +1,11 @@
-import { CampoObrigatorio, ClienteNaoEncontrado } from "../errors/listErrors"
+import Errors from "../errors/listErrors"
 export default (err, req, res, next) => {
   let status = 500
-  if (err instanceof CampoObrigatorio || err instanceof ClienteNaoEncontrado) {
+  if (
+    err instanceof Errors.CampoObrigatorio ||
+    err instanceof Errors.ClienteNaoEncontrado ||
+    err instanceof Errors.CampoInvalido
+  ) {
     status = 404
   }
   res.status(status).json({

@@ -1,4 +1,4 @@
-export class CampoObrigatorio extends Error {
+export default class CampoObrigatorio extends Error {
   id: number
   name: string
   constructor() {

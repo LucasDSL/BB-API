@@ -1,4 +1,5 @@
-import { CampoObrigatorio } from "./CampoObrigatorio"
-import { ClienteNaoEncontrado } from "./CllienteNaoEncontrado"
+import CampoObrigatorio from "./CampoObrigatorio"
+import ClienteNaoEncontrado from "./CllienteNaoEncontrado"
+import CampoInvalido from "./CampoInvalido"
 
-export { CampoObrigatorio, ClienteNaoEncontrado }
+export default { CampoObrigatorio, ClienteNaoEncontrado, CampoInvalido }
