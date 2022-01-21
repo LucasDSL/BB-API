@@ -8,7 +8,7 @@ import CampoInvalido from "../errors/CampoInvalido"
 import CampoObrigatorio from "../errors/CampoObrigatorio"
 
 class CustomerController {
-  async createCustomer(
+  async createCustomer (
     req: express.Request,
     res: express.Response,
     next: Function
@@ -22,7 +22,6 @@ class CustomerController {
       "customerAddress",
     ]
     try {
-      console.log(this)
       fieldsNewCustomer.forEach((field) => {
         if (!customerFromClient[field]) {
           throw new Errors.CampoObrigatorio()
