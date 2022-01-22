@@ -9,11 +9,13 @@ export default (err, req, res, next) => {
   }
   if (
     err instanceof Errors.ProdutoNaoEncotrado ||
-    err instanceof Errors.ClienteNaoEncontrado
+    err instanceof Errors.ClienteNaoEncontrado ||
+    err instanceof Errors.PedidoNaoEncontrado ||
+    err instanceof Errors.QuantidadeInsuficiente
   ) {
     status = 404
   }
-  
+
   res.status(status).json({
     id: err.id,
     errorName: err.name,
