@@ -3,7 +3,9 @@ import { createConnection } from "typeorm"
 import { Customers } from "../entity/Customer.entity"
 import { Orders } from "../entity/Order.entity"
 import { Products } from "../entity/Product.entity"
+import ClienteNaoEncontrado from "../errors/CllienteNaoEncontrado"
 import Errors from "../errors/listErrors"
+import PedidoNaoEncontrado from "../errors/PedidoNaoEncontrado"
 import QuantidadeInsuficiente from "../errors/QuantidadeInsuficiente"
 import NewOrder from "../interfaces/NewOrder"
 
@@ -77,6 +79,57 @@ class OrdersController {
       await conn.manager.delete(Orders, { id: Number(orderId) })
       await conn.close()
       res.status(204).end()
+    } catch (error) {
+      next(error)
+    }
+  }
+  async getProduct(
+    req: express.Request,
+    res: express.Response,
+    next: Function
+  ) {
+    const { orderId } = req.params
+    try {
+      const conn = await createConnection()
+      const order = await conn.manager.findOne(
+        Orders,
+        {
+          id: Number(orderId),
+        },
+        { relations: ["product"] }
+      )
+      await conn.close()
+      if (!order) {
+        throw new PedidoNaoEncontrado(Number(orderId))
+      }
+
+      res.status(200).json(order.product)
+    } catch (error) {
+      next(error)
+    }
+  }
+
+  async getCustomer(
+    req: express.Request,
+    res: express.Response,
+    next: Function
+  ) {
+    const { orderId } = req.params
+    try {
+      const conn = await createConnection()
+      const order = await conn.manager.findOne(
+        Orders,
+        {
+          id: Number(orderId),
+        },
+        { relations: ["customer"] }
+      )
+      await conn.close()
+      if (!order) {
+        throw new PedidoNaoEncontrado(Number(orderId))
+      }
+
+      res.status(200).json(order.customer)
     } catch (error) {
       next(error)
     }
