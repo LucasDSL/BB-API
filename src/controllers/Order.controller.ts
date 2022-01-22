@@ -12,7 +12,7 @@ class OrdersController {
     const newOrder: NewOrder = req.body
     try {
       const conn = await createConnection()
-      
+
       const isThereProduct = await conn.manager.findOne(Products, {
         id: newOrder.productId,
       })
@@ -53,6 +53,30 @@ class OrdersController {
       await conn.close()
 
       return res.status(201).end()
+    } catch (error) {
+      next(error)
+    }
+  }
+
+  async deleteOrder(
+    req: express.Request,
+    res: express.Response,
+    next: Function
+  ) {
+    const { orderId } = req.params
+    try {
+      const conn = await createConnection()
+      const isThereOrder = await conn.manager.findOne(Orders, {
+        id: Number(orderId),
+      })
+      if (!isThereOrder) {
+        await conn.close()
+        throw new Errors.PedidoNaoEncontrado(Number(orderId))
+      }
+
+      await conn.manager.delete(Orders, { id: Number(orderId) })
+      await conn.close()
+      res.status(204).end()
     } catch (error) {
       next(error)
     }
