@@ -1,4 +1,5 @@
 import CustomerController from "./Customer.controller"
 import ProductsController from "./Product.controller"
+import OrderController from "./Order.controller"
 
-export { CustomerController, ProductsController }
+export { OrderController, CustomerController, ProductsController }

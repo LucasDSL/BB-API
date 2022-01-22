@@ -2,7 +2,7 @@ import express from "express"
 import { createConnection } from "typeorm"
 import { Products } from "../entity/Product.entity"
 import Errors from "../errors/listErrors"
-import newProduct from "../interfaces/newProduct"
+import newProduct from "../interfaces/NewProduct"
 
 class ProductsController {
   async allProducts(
