@@ -2,11 +2,13 @@
 
 ### Tecnologias utilizadas
 
+<div display="flex">
 <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/typescript/typescript-plain.svg" width="70"/>
 <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/express/express-original.svg" width="70"/>
 <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-original.svg" width="70" />
 <img src="./docs/typeormicon.png" width="70">
 <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mysql/mysql-plain-wordmark.svg" width="70" />
+</div>
 
 ### Como rodar localmente?
 
@@ -60,3 +62,4 @@ npx ts-node src/Infra/createTables.ts
 ````bash
 npm start
 ```
+````
