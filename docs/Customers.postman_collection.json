@@ -1,0 +1,85 @@
+{
+	"info": {
+		"_postman_id": "01f2f4f3-afad-4dc3-9fee-894916adab8d",
+		"name": "Customers",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "create customer",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"LUCAO\",\r\n    \"email\": \"LUCAO@LUCAS.gmail.LCAS\",\r\n    \"cellphone\": 1,\r\n    \"cpf\": 2,\r\n    \"customerAddress\": \"this street bruh\",\r\n    \"password\": \"luquinhas123\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:3000/customer",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"customer"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "delete customer by id",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "localhost:3000/customer/2",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"customer",
+						"2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update customer",
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"LUCAO\",\r\n    \"email\": \"LUCAO@LUCAS.gmail.LCAS\",\r\n    \"cellphone\": 1,\r\n    \"cpf\": 2,\r\n    \"customerAddress\": \"this street bruh\",\r\n    \"password\": \"luquinhas123\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "/customer/:customerId",
+					"path": [
+						"customer",
+						":customerId"
+					],
+					"variable": [
+						{
+							"key": "customerId",
+							"value": null
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
