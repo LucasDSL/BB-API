@@ -55,7 +55,7 @@ npx ts-node src/Infra/createTables.ts
 
 5 - Agora de volta a ormconfig.json coloque a opção "synchronize" como false, isso é muito importante pois evita que a cada conexão com seu db haja tentativa de criação de tabelas pelo typeorm.
 
-6 - Rode o projeto e utilize-o.
+6 - Rode o projeto e faça requisições com as coleções postman na pasta "docs".
 
 ````bash
 npm start
