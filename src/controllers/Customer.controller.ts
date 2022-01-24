@@ -6,9 +6,11 @@ import { Customers } from "../entity/Customer.entity"
 import Errors from "../errors/listErrors"
 import CampoInvalido from "../errors/CampoInvalido"
 import CampoObrigatorio from "../errors/CampoObrigatorio"
+import { Orders } from "../entity/Order.entity"
+import ClienteNaoEncontrado from "../errors/CllienteNaoEncontrado"
 
 class CustomerController {
-  async createCustomer (
+  async createCustomer(
     req: express.Request,
     res: express.Response,
     next: Function
@@ -99,9 +101,14 @@ class CustomerController {
   ) {
     try {
       const { customerId } = req.params
-      const control = new CustomerController()
-      control.isThereCostumer(Number(customerId), next)
       const conn = await createConnection()
+      const isThereCostumer = await conn.manager.findOne(Customers, {
+        id: Number(customerId),
+      })
+      if (!isThereCostumer) {
+        throw new ClienteNaoEncontrado(Number(customerId))
+      }
+      await conn.manager.delete(Orders, { customer: isThereCostumer })
       await conn.manager.delete(Customers, {
         id: customerId,
       })
