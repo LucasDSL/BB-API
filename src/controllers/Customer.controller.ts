@@ -102,13 +102,13 @@ class CustomerController {
     try {
       const { customerId } = req.params
       const conn = await createConnection()
-      const isThereCostumer = await conn.manager.findOne(Customers, {
+      const isThereCostumer = conn.manager.findOne(Customers, {
         id: Number(customerId),
       })
       if (!isThereCostumer) {
+        await conn.close()
         throw new ClienteNaoEncontrado(Number(customerId))
       }
-      await conn.manager.delete(Orders, { customer: isThereCostumer })
       await conn.manager.delete(Customers, {
         id: customerId,
       })

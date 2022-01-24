@@ -13,7 +13,7 @@ export class Orders {
   @PrimaryGeneratedColumn()
   id: number
 
-  @OneToOne(() => Customers)
+  @OneToOne(() => Customers, { onDelete: "CASCADE" })
   @JoinColumn()
   customer: Customers
 
