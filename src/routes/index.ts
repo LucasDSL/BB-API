@@ -1,6 +1,6 @@
 import cors from "cors"
 import { Application, json } from "express"
-import CustomerRouter from "./Customer.routes"
+import CustomerRouter from "../modules/Customer/Customer.routes"
 import ProductsRouter from "./Product.routes"
 import OrdersRouter from "./Orders.routes"
 import errorHandler from "../middlewares/errorHandler"
