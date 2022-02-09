@@ -28,7 +28,7 @@ class OrdersController {
       })
       if (!isThereCustomer) {
         await conn.close()
-        throw new ClienteNaoEncontrado(newOrder.customerId)
+        throw new ClienteNaoEncontrado()
       }
 
       const newOrderQttLessEqualThanStock =
