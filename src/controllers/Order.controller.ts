@@ -3,11 +3,11 @@ import { createConnection } from "typeorm"
 import { Customers } from "../entity/Customer.entity"
 import { Orders } from "../entity/Order.entity"
 import { Products } from "../entity/Product.entity"
-import ClienteNaoEncontrado from "../shared/errors/CllienteNaoEncontrado"
-import Errors from "../shared/errors/listErrors"
 import PedidoNaoEncontrado from "../shared/errors/PedidoNaoEncontrado"
 import QuantidadeInsuficiente from "../shared/errors/QuantidadeInsuficiente"
 import NewOrder from "../interfaces/NewOrder"
+import ProdutoNaoEncotrado from "../shared/errors/ProdutoNaoEncontrado"
+import ClienteNaoEncontrado from "../shared/errors/CllienteNaoEncontrado"
 
 class OrdersController {
   async addOrder(req: express.Request, res: express.Response, next: Function) {
@@ -20,7 +20,7 @@ class OrdersController {
       })
       if (!isThereProduct) {
         await conn.close()
-        throw new Errors.ProdutoNaoEncotrado(newOrder.productId)
+        throw new ProdutoNaoEncotrado(newOrder.productId)
       }
 
       const isThereCustomer = await conn.manager.findOne(Customers, {
@@ -28,7 +28,7 @@ class OrdersController {
       })
       if (!isThereCustomer) {
         await conn.close()
-        throw new Errors.ClienteNaoEncontrado(newOrder.customerId)
+        throw new ClienteNaoEncontrado(newOrder.customerId)
       }
 
       const newOrderQttLessEqualThanStock =
@@ -73,7 +73,7 @@ class OrdersController {
       })
       if (!isThereOrder) {
         await conn.close()
-        throw new Errors.PedidoNaoEncontrado(Number(orderId))
+        throw new PedidoNaoEncontrado(Number(orderId))
       }
 
       await conn.manager.delete(Orders, { id: Number(orderId) })

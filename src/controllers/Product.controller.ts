@@ -1,8 +1,9 @@
 import express from "express"
 import { createConnection } from "typeorm"
 import { Products } from "../entity/Product.entity"
-import Errors from "../shared/errors/listErrors"
 import newProduct from "../interfaces/NewProduct"
+import CampoObrigatorio from "../shared/errors/CampoObrigatorio"
+import ProdutoNaoEncotrado from "../shared/errors/ProdutoNaoEncontrado"
 
 class ProductsController {
   async allProducts(
@@ -15,7 +16,7 @@ class ProductsController {
       const allProducts = await conn.manager.find(Products)
       if (allProducts.length === 0) {
         await conn.close()
-        throw new Errors.ProdutoNaoEncotrado()
+        throw new ProdutoNaoEncotrado()
       }
       await conn.close()
       return res.status(200).json(allProducts)
@@ -34,12 +35,15 @@ class ProductsController {
       const fieldsAddProduct = ["name", "author", "price", "onStock"]
       fieldsAddProduct.forEach((field) => {
         if (!productFromCliente[field]) {
-          throw new Errors.CampoObrigatorio()
+          throw new CampoObrigatorio()
         }
       })
 
       const conn = await createConnection()
-      const addedProduct = await conn.manager.insert(Products, productFromCliente)
+      const addedProduct = await conn.manager.insert(
+        Products,
+        productFromCliente
+      )
       await conn.close()
       return res.status(200).end()
     } catch (error) {
