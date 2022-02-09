@@ -1,7 +1,6 @@
 import { createConnection } from "typeorm"
 import { Customers } from "../../entity/Customer.entity"
 import Customer from "./Customer.model"
-import Errors from "../../shared/errors/listErrors"
 
 class CustomerService {
   async createCustomer(newCustomer: Customer, next): Promise<Customers> {
@@ -47,18 +46,12 @@ class CustomerService {
   }
 
   async searchCustomerByEmail(customerEmail: string, next: Function) {
-    try {
-      const conn = await createConnection()
-      const customerDb = await conn.manager.findOne(Customers, {
-        email: customerEmail,
-      })
-      if (customerDb) {
-        return customerDb
-      }
-      throw new Errors.DadosIncorretos()
-    } catch (error) {
-      next(error)
-    }
+    const conn = await createConnection()
+    const customerDb = await conn.manager.findOne(Customers, {
+      email: customerEmail,
+    })
+    await conn.close()
+    return customerDb
   }
 
   async deleteCustomer(customer: Customers, next: Function) {

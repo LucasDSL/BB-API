@@ -65,10 +65,13 @@ class CustomerController {
   async login(req: express.Request, res: express.Response, next: Function) {
     try {
       const token = await Customer.login(req.body, next)
-      res.set("Authorization", token)
-      res.status(204).end()
+      if (token) {
+        res.set("Authorization", token)
+        return res.status(204).send()
+      }
+      return res.status(204).end()
     } catch (error) {
-      next()
+      next(error)
     }
   }
 }

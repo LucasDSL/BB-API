@@ -1,9 +1,9 @@
 import bcrypt from "bcrypt"
 import ClienteNaoEncontrado from "../../shared/errors/CllienteNaoEncontrado"
-import Errors from "../../shared/errors/listErrors"
 import CustomerServices from "./Customer.services"
 import jwt from "jsonwebtoken"
 import DadosIncorretos from "../../shared/errors/DadosIncorretos"
+import CampoObrigatorio from "../../shared/errors/CampoObrigatorio"
 class Customer {
   email: string
   password: string
@@ -44,7 +44,7 @@ class Customer {
     fieldsNewCustomer.forEach((field) => {
       console.log(this[field])
       if (!this[field]) {
-        throw new Errors.CampoObrigatorio()
+        throw new CampoObrigatorio()
       }
     })
   }
@@ -70,7 +70,7 @@ class Customer {
 
   async addPassword(password: string) {
     if (!password) {
-      throw new Errors.CampoObrigatorio()
+      throw new CampoObrigatorio()
     }
     this.password = await Customer.generatePassword(password)
   }
@@ -81,21 +81,19 @@ class Customer {
   }
 
   static async login(reqBody, next: Function) {
-    try {
-      const customer = await Customer.searchCustomerByEmail(reqBody.email, next)
-      const isPasswordCorrect = await bcrypt.compare(
-        reqBody.password,
-        customer.password
-      )
-      let token
-      if (isPasswordCorrect) {
-        token = jwt.sign(reqBody, process.env.SECRET_KEY)
-        return token
-      }
+    const customer = await Customer.searchCustomerByEmail(reqBody.email, next)
+    if (!customer) {
       throw new DadosIncorretos()
-    } catch (error) {
-      next(error)
     }
+    const isPasswordCorrect = await bcrypt.compare(
+      reqBody.password,
+      customer.password
+    )
+    if (isPasswordCorrect) {
+      const token = jwt.sign(reqBody, process.env.SECRET_KEY)
+      return token
+    }
+    throw new DadosIncorretos()
   }
 }
 
