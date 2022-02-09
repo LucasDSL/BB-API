@@ -2,6 +2,8 @@ import bcrypt from "bcrypt"
 import ClienteNaoEncontrado from "../../shared/errors/CllienteNaoEncontrado"
 import Errors from "../../shared/errors/listErrors"
 import CustomerServices from "./Customer.services"
+import jwt from "jsonwebtoken"
+import DadosIncorretos from "../../shared/errors/DadosIncorretos"
 class Customer {
   email: string
   password: string
@@ -47,12 +49,16 @@ class Customer {
     })
   }
 
-  static async isThereCostumer(customerId: number, next: Function) {
-    return await CustomerServices.isThereCostumer(customerId, next)
+  static async searchCustomerById(customerId: number, next: Function) {
+    return await CustomerServices.searchCustomerById(customerId, next)
+  }
+
+  static async searchCustomerByEmail(customerEmail: string, next: Function) {
+    return CustomerServices.searchCustomerByEmail(customerEmail, next)
   }
 
   static async deleteCustomer(customerId: number, next: Function) {
-    const isThereCustomer = await Customer.isThereCostumer(
+    const isThereCustomer = await Customer.searchCustomerById(
       Number(customerId),
       next
     )
@@ -72,6 +78,24 @@ class Customer {
   static generatePassword(password: string) {
     const cost = 12
     return bcrypt.hash(password, cost)
+  }
+
+  static async login(reqBody, next: Function) {
+    try {
+      const customer = await Customer.searchCustomerByEmail(reqBody.email, next)
+      const isPasswordCorrect = await bcrypt.compare(
+        reqBody.password,
+        customer.password
+      )
+      let token
+      if (isPasswordCorrect) {
+        token = jwt.sign(reqBody, process.env.SECRET_KEY)
+        return token
+      }
+      throw new DadosIncorretos()
+    } catch (error) {
+      next(error)
+    }
   }
 }
 
