@@ -54,8 +54,11 @@ class CustomerController {
     next: Function
   ) {
     try {
-      const { customerId } = req.params
-      await Customer.deleteCustomer(Number(customerId), next)
+      const tokenFromUser = req.body.token
+      const customerData = await Customer.verifyTokenAndReturnPayload(
+        tokenFromUser
+      )
+      await Customer.deleteCustomer(customerData)
       return res.status(204).end()
     } catch (error) {
       next(error)
@@ -64,7 +67,7 @@ class CustomerController {
 
   async login(req: express.Request, res: express.Response, next: Function) {
     try {
-      const token = await Customer.login(req.body, next)
+      const token = await Customer.login(req.body)
       if (token) {
         res.set("Authorization", token)
         return res.status(204).send()

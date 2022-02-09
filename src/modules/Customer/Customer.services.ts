@@ -45,7 +45,7 @@ class CustomerService {
     }
   }
 
-  async searchCustomerByEmail(customerEmail: string, next: Function) {
+  async searchCustomerByEmail(customerEmail: string) {
     const conn = await createConnection()
     const customerDb = await conn.manager.findOne(Customers, {
       email: customerEmail,
@@ -54,14 +54,10 @@ class CustomerService {
     return customerDb
   }
 
-  async deleteCustomer(customer: Customers, next: Function) {
-    try {
-      const conn = await createConnection()
-      await conn.manager.remove(customer)
-      await conn.close()
-    } catch (error) {
-      next(error)
-    }
+  async deleteCustomer(customer: Customers) {
+    const conn = await createConnection()
+    await conn.manager.remove(customer)
+    await conn.close()
   }
 }
 

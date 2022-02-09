@@ -53,19 +53,18 @@ class Customer {
     return await CustomerServices.searchCustomerById(customerId, next)
   }
 
-  static async searchCustomerByEmail(customerEmail: string, next: Function) {
-    return CustomerServices.searchCustomerByEmail(customerEmail, next)
+  static async searchCustomerByEmail(customerEmail: string) {
+    return CustomerServices.searchCustomerByEmail(customerEmail)
   }
 
-  static async deleteCustomer(customerId: number, next: Function) {
-    const isThereCustomer = await Customer.searchCustomerById(
-      Number(customerId),
-      next
+  static async deleteCustomer(customerData) {
+    const isThereCustomer = await Customer.searchCustomerByEmail(
+      customerData.email
     )
     if (!isThereCustomer) {
-      throw new ClienteNaoEncontrado(customerId)
+      throw new ClienteNaoEncontrado()
     }
-    await CustomerServices.deleteCustomer(isThereCustomer, next)
+    await CustomerServices.deleteCustomer(isThereCustomer)
   }
 
   async addPassword(password: string) {
@@ -80,8 +79,8 @@ class Customer {
     return bcrypt.hash(password, cost)
   }
 
-  static async login(reqBody, next: Function) {
-    const customer = await Customer.searchCustomerByEmail(reqBody.email, next)
+  static async login(reqBody) {
+    const customer = await Customer.searchCustomerByEmail(reqBody.email)
     if (!customer) {
       throw new DadosIncorretos()
     }
@@ -94,6 +93,11 @@ class Customer {
       return token
     }
     throw new DadosIncorretos()
+  }
+
+  static async verifyTokenAndReturnPayload(token: string) {
+    const payload = jwt.verify(token, process.env.SECRET_KEY)
+    return payload
   }
 }
 
