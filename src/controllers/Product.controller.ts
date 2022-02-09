@@ -1,7 +1,7 @@
 import express from "express"
 import { createConnection } from "typeorm"
 import { Products } from "../entity/Product.entity"
-import Errors from "../errors/listErrors"
+import Errors from "../shared/errors/listErrors"
 import newProduct from "../interfaces/NewProduct"
 
 class ProductsController {

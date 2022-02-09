@@ -1,4 +1,4 @@
-import Errors from "../errors/listErrors"
+import Errors from "../shared/errors/listErrors"
 export default (err, req, res, next) => {
   let status = 500
   if (

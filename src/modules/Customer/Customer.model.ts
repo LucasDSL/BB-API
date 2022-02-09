@@ -1,5 +1,5 @@
 import bcrypt from "bcrypt"
-import Errors from "../../errors/listErrors"
+import Errors from "../../shared/errors/listErrors"
 import CustomerServices from "./Customer.services"
 class Customer {
   email: string
