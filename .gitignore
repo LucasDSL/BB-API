@@ -6,3 +6,4 @@ tmp/
 temp/
 ormconfig.json
 instrucoesAtividade1.txt
+.env
