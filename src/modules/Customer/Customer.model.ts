@@ -1,4 +1,5 @@
 import bcrypt from "bcrypt"
+import ClienteNaoEncontrado from "../../shared/errors/CllienteNaoEncontrado"
 import Errors from "../../shared/errors/listErrors"
 import CustomerServices from "./Customer.services"
 class Customer {
@@ -44,6 +45,21 @@ class Customer {
         throw new Errors.CampoObrigatorio()
       }
     })
+  }
+
+  static async isThereCostumer(customerId: number, next: Function) {
+    return await CustomerServices.isThereCostumer(customerId, next)
+  }
+
+  static async deleteCustomer(customerId: number, next: Function) {
+    const isThereCustomer = await Customer.isThereCostumer(
+      Number(customerId),
+      next
+    )
+    if (!isThereCustomer) {
+      throw new ClienteNaoEncontrado(customerId)
+    }
+    await CustomerServices.deleteCustomer(isThereCustomer, next)
   }
 
   async addPassword(password: string) {

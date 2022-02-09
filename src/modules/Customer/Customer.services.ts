@@ -2,7 +2,7 @@ import { createConnection } from "typeorm"
 import { Customers } from "../../entity/Customer.entity"
 import Customer from "./Customer.model"
 
-export default new (class CustomerService {
+class CustomerService {
   async createCustomer(newCustomer: Customer, next): Promise<Customers> {
     try {
       const conn = await createConnection()
@@ -28,4 +28,32 @@ export default new (class CustomerService {
       next(error)
     }
   }
-})()
+
+  async isThereCostumer(customerId: number, next: Function) {
+    try {
+      const conn = await createConnection()
+      const customerOnDb = await conn.manager.findOne(Customers, {
+        id: customerId,
+      })
+      await conn.close()
+      if (customerOnDb) {
+        return customerOnDb
+      }
+      return
+    } catch (error) {
+      next(error)
+    }
+  }
+
+  async deleteCustomer(customer: Customers, next: Function) {
+    try {
+      const conn = await createConnection()
+      await conn.manager.remove(customer)
+      await conn.close()
+    } catch (error) {
+      next(error)
+    }
+  }
+}
+
+export default new CustomerService()
