@@ -4,8 +4,10 @@ import CampoInvalido from "./CampoInvalido"
 import ProdutoNaoEncotrado from "./ProdutoNaoEncontrado"
 import QuantidadeInsuficiente from "./QuantidadeInsuficiente"
 import PedidoNaoEncontrado from "./PedidoNaoEncontrado"
+import DadosIncorretos from "./DadosIncorretos"
 
 export default {
+  DadosIncorretos,
   CampoObrigatorio,
   ClienteNaoEncontrado,
   CampoInvalido,
