@@ -1,9 +1,9 @@
 import express from "express"
 import { createConnection } from "typeorm"
-import { Products } from "../entity/Product.entity"
-import newProduct from "../interfaces/NewProduct"
-import CampoObrigatorio from "../shared/errors/CampoObrigatorio"
-import ProdutoNaoEncotrado from "../shared/errors/ProdutoNaoEncontrado"
+import { Products } from "../../entity/Product.entity"
+import newProduct from "./NewProduct"
+import CampoObrigatorio from "../../shared/errors/CampoObrigatorio"
+import ProdutoNaoEncotrado from "../../shared/errors/ProdutoNaoEncontrado"
 
 class ProductsController {
   async allProducts(
