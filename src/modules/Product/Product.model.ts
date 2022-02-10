@@ -1,4 +1,5 @@
 import CampoObrigatorio from "../../shared/errors/CampoObrigatorio"
+import ProdutoNaoEncotrado from "../../shared/errors/ProdutoNaoEncontrado"
 import ProductServices from "./Product.services"
 
 class ProductModel {
@@ -13,19 +14,27 @@ class ProductModel {
     this.price = newProduct.price
     this.onStock = newProduct.onStock
 
-    this.valida()
+    this.validate()
   }
   async createProductOnDB() {
     return await ProductServices.addProduct(this)
   }
 
-  valida() {
+  validate() {
     const fieldsAddProduct = ["name", "author", "price", "onStock"]
     fieldsAddProduct.forEach((field) => {
       if (!this[field]) {
         throw new CampoObrigatorio()
       }
     })
+  }
+
+  static async getAllProducts() {
+    const allProducts = await ProductServices.getAllProducts()
+    if (allProducts.length === 0) {
+      throw new ProdutoNaoEncotrado()
+    }
+    return allProducts
   }
 }
 

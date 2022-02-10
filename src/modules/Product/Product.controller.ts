@@ -13,13 +13,7 @@ class ProductsController {
     next: Function
   ) {
     try {
-      const conn = await createConnection()
-      const allProducts = await conn.manager.find(Products)
-      if (allProducts.length === 0) {
-        await conn.close()
-        throw new ProdutoNaoEncotrado()
-      }
-      await conn.close()
+      const allProducts = await Product.getAllProducts()
       return res.status(200).json(allProducts)
     } catch (error) {
       next(error)

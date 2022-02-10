@@ -15,7 +15,7 @@ class CustomerController {
       const creatingCustomer = new Customer(customerFromClient)
 
       await creatingCustomer.addPassword(password)
-      const customerOnDb = await creatingCustomer.addOnDatabase(next)
+      const customerOnDb = await creatingCustomer.addOnDatabase()
 
       return res.status(201).json({
         Message: "Cliente criado com sucesso",

@@ -3,15 +3,11 @@ import { Customers } from "../../entity/Customer.entity"
 import Customer from "./Customer.model"
 
 class CustomerService {
-  async createCustomer(newCustomer: Customer, next): Promise<Customers> {
-    try {
-      const conn = await createConnection()
-      const customerOnDb = await conn.manager.save(Customers, newCustomer)
-      await conn.close()
-      return customerOnDb
-    } catch (error) {
-      next(error)
-    }
+  async createCustomer(newCustomer: Customer): Promise<Customers> {
+    const conn = await createConnection()
+    const customerOnDb = await conn.manager.save(Customers, newCustomer)
+    await conn.close()
+    return customerOnDb
   }
 
   async updateCustomer(updates: Customer, next: Function, id: number) {

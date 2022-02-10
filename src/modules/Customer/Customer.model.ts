@@ -28,8 +28,8 @@ class Customer {
     return await CustomerServices.updateCustomer(this, next, customerId)
   }
 
-  async addOnDatabase(next: Function) {
-    return await CustomerServices.createCustomer(this, next)
+  async addOnDatabase() {
+    return await CustomerServices.createCustomer(this)
   }
 
   validate() {
