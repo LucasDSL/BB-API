@@ -49,8 +49,8 @@ class Customer {
     })
   }
 
-  static async searchCustomerById(customerId: number, next: Function) {
-    return await CustomerServices.searchCustomerById(customerId, next)
+  static async searchCustomerById(customerId: number) {
+    return await CustomerServices.searchCustomerById(customerId)
   }
 
   static async searchCustomerByEmail(customerEmail: string) {

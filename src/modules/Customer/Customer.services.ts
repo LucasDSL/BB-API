@@ -25,20 +25,16 @@ class CustomerService {
     }
   }
 
-  async searchCustomerById(customerId: number, next: Function) {
-    try {
-      const conn = await createConnection()
-      const customerOnDb = await conn.manager.findOne(Customers, {
-        id: customerId,
-      })
-      await conn.close()
-      if (customerOnDb) {
-        return customerOnDb
-      }
-      return
-    } catch (error) {
-      next(error)
+  async searchCustomerById(customerId: number) {
+    const conn = await createConnection()
+    const customerOnDb = await conn.manager.findOne(Customers, {
+      id: customerId,
+    })
+    await conn.close()
+    if (customerOnDb) {
+      return customerOnDb
     }
+    return
   }
 
   async searchCustomerByEmail(customerEmail: string) {
