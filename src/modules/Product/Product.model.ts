@@ -22,7 +22,7 @@ class ProductModel {
     if (!productOnDb) {
       return await ProductServices.addProduct(this)
     }
-    
+
     const newQuantityOfProduct = this.onStock + productOnDb.onStock
     return await ProductServices.increaseProductStock(
       productOnDb,
@@ -34,6 +34,9 @@ class ProductModel {
     return await ProductServices.productByName(this.name)
   }
 
+  static async searchProductById(productId: number) {
+    return await ProductServices.productById(productId)
+  }
   validate() {
     const fieldsAddProduct = ["name", "author", "price", "onStock"]
     fieldsAddProduct.forEach((field) => {

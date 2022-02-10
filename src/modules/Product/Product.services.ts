@@ -35,6 +35,13 @@ class ProductService {
     await conn.close()
     return resultOperation
   }
+
+  async productById(productId: number) {
+    const conn = await createConnection()
+    const product = await conn.manager.findOne(Products, { id: productId })
+    await conn.close()
+    return product
+  }
 }
 
 export default new ProductService()
