@@ -4,6 +4,7 @@ import { Products } from "../../entity/Product.entity"
 import newProduct from "./NewProduct"
 import CampoObrigatorio from "../../shared/errors/CampoObrigatorio"
 import ProdutoNaoEncotrado from "../../shared/errors/ProdutoNaoEncontrado"
+import Product from "./Product.model"
 
 class ProductsController {
   async allProducts(
@@ -30,22 +31,11 @@ class ProductsController {
     res: express.Response,
     next: Function
   ) {
-    const productFromCliente: newProduct = req.body
+    const productFromClient: newProduct = req.body
     try {
-      const fieldsAddProduct = ["name", "author", "price", "onStock"]
-      fieldsAddProduct.forEach((field) => {
-        if (!productFromCliente[field]) {
-          throw new CampoObrigatorio()
-        }
-      })
-
-      const conn = await createConnection()
-      const addedProduct = await conn.manager.insert(
-        Products,
-        productFromCliente
-      )
-      await conn.close()
-      return res.status(200).end()
+      const product = new Product(productFromClient)
+      const productOnDb = product.createProductOnDB()
+      return res.status(200).json({ Status: "Success", Product: productOnDb })
     } catch (error) {
       next(error)
     }
