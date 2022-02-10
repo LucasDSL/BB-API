@@ -23,17 +23,7 @@ class OrdersController {
   ) {
     const { orderId } = req.params
     try {
-      const conn = await createConnection()
-      const isThereOrder = await conn.manager.findOne(Orders, {
-        id: Number(orderId),
-      })
-      if (!isThereOrder) {
-        await conn.close()
-        throw new PedidoNaoEncontrado(Number(orderId))
-      }
-
-      await conn.manager.delete(Orders, { id: Number(orderId) })
-      await conn.close()
+      await Order.delete(Number(orderId))
       res.status(204).end()
     } catch (error) {
       next(error)
@@ -47,20 +37,8 @@ class OrdersController {
   ) {
     const { orderId } = req.params
     try {
-      const conn = await createConnection()
-      const order = await conn.manager.findOne(
-        Orders,
-        {
-          id: Number(orderId),
-        },
-        { relations: ["product"] }
-      )
-      await conn.close()
-      if (!order) {
-        throw new PedidoNaoEncontrado(Number(orderId))
-      }
-
-      res.status(200).json(order.product)
+      const product = Order.getProduct(Number(orderId))
+      res.status(200).json(product)
     } catch (error) {
       next(error)
     }
@@ -73,20 +51,8 @@ class OrdersController {
   ) {
     const { orderId } = req.params
     try {
-      const conn = await createConnection()
-      const order = await conn.manager.findOne(
-        Orders,
-        {
-          id: Number(orderId),
-        },
-        { relations: ["customer"] }
-      )
-      await conn.close()
-      if (!order) {
-        throw new PedidoNaoEncontrado(Number(orderId))
-      }
-
-      res.status(200).json(order.customer)
+      const customer = await Order.getCustomer(Number(orderId))
+      res.status(200).json(customer)
     } catch (error) {
       next(error)
     }
