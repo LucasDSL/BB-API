@@ -15,6 +15,26 @@ class ProductService {
     await conn.close()
     return products
   }
+
+  async productByName(name: string) {
+    const conn = await createConnection()
+    const product = await conn.manager.findOne(Products, { name: name })
+    await conn.close()
+    return product
+  }
+
+  async increaseProductStock(Product: Products, newQuantity: number) {
+    const conn = await createConnection()
+    const resultOperation = await conn.manager.update(
+      Products,
+      { id: Product.id },
+      {
+        onStock: newQuantity,
+      }
+    )
+    await conn.close()
+    return resultOperation
+  }
 }
 
 export default new ProductService()

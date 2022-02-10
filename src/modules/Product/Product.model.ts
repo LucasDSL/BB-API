@@ -16,8 +16,22 @@ class ProductModel {
 
     this.validate()
   }
+
   async createProductOnDB() {
-    return await ProductServices.addProduct(this)
+    const productOnDb = await this.searchProductByName()
+    if (!productOnDb) {
+      return await ProductServices.addProduct(this)
+    }
+    
+    const newQuantityOfProduct = this.onStock + productOnDb.onStock
+    return await ProductServices.increaseProductStock(
+      productOnDb,
+      newQuantityOfProduct
+    )
+  }
+
+  async searchProductByName() {
+    return await ProductServices.productByName(this.name)
   }
 
   validate() {
