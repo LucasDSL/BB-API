@@ -36,6 +36,19 @@ class ProductService {
     return resultOperation
   }
 
+  async decreaseProductStock(Product: Products, newQuantity: number) {
+    const conn = await createConnection()
+    const resultOperation = await conn.manager.update(
+      Products,
+      { id: Product.id },
+      {
+        onStock: newQuantity,
+      }
+    )
+    await conn.close()
+    return resultOperation
+  }
+
   async productById(productId: number) {
     const conn = await createConnection()
     const product = await conn.manager.findOne(Products, { id: productId })

@@ -1,3 +1,4 @@
+import { Products } from "../../entity/Product.entity"
 import CampoObrigatorio from "../../shared/errors/CampoObrigatorio"
 import ProdutoNaoEncotrado from "../../shared/errors/ProdutoNaoEncontrado"
 import ProductServices from "./Product.services"
@@ -37,6 +38,7 @@ class ProductModel {
   static async searchProductById(productId: number) {
     return await ProductServices.productById(productId)
   }
+
   validate() {
     const fieldsAddProduct = ["name", "author", "price", "onStock"]
     fieldsAddProduct.forEach((field) => {
@@ -52,6 +54,10 @@ class ProductModel {
       throw new ProdutoNaoEncotrado()
     }
     return allProducts
+  }
+
+  static async decreaseQuantity(product: Products, newQuantity: number) {
+    return await ProductServices.decreaseProductStock(product, newQuantity)
   }
 }
 
