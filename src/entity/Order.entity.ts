@@ -4,6 +4,7 @@ import {
   PrimaryGeneratedColumn,
   OneToOne,
   JoinColumn,
+  ManyToMany,
 } from "typeorm"
 import { Customers } from "./Customer.entity"
 import { Products } from "./Product.entity"
@@ -13,11 +14,11 @@ export class Orders {
   @PrimaryGeneratedColumn()
   id: number
 
-  @OneToOne(() => Customers, { onDelete: "CASCADE" })
+  @ManyToMany(() => Customers, { onDelete: "CASCADE" })
   @JoinColumn()
   customer: Customers
 
-  @OneToOne(() => Products)
+  @ManyToMany(() => Products)
   @JoinColumn()
   product: Products
 
